@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:wheelsdeal_pos/screens/addcustomer/selectstate.dart';
 import 'package:wheelsdeal_pos/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,7 +56,15 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
           child: Container(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+              
+               
+               Timer(Duration(milliseconds: 1000),(){
+                   Get.off(AddCustomerSelectState());
+               });
+               
+               
+              },
               child: Text("Add Customer"),
             ),
           ),
