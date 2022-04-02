@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wheelsdeal_pos/models/Provision.dart';
+import 'package:wheelsdeal_pos/screens/addcustomer/adddistrict.dart';
 import 'package:wheelsdeal_pos/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,13 +18,15 @@ class AddCustomerSelectState extends StatefulWidget {
 class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
 
    bool isloading = true;
+   
+   
 
   Future fetchState()async{
-    Utils util = Utils();
-    final String basicurl = util.baseurl;
-    final String url = "${basicurl}/state";
-    var response = await http.get(Uri.parse(url));
-    if(response.statusCode == 200){
+    try{
+      Utils util = Utils();
+      final String basicurl = util.baseurl;
+      final String url = "${basicurl}/state";
+      var response = await http.get(Uri.parse(url));
       var jsonresponse = jsonDecode(response.body);
       var status = jsonresponse[0]['status'];
       print(status);
@@ -29,6 +34,28 @@ class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
         var data = jsonresponse[0]['data'];
         return data.map((json) => Provision.fromJson(json)).toList();
       }
+    
+    } on SocketException{
+      Get.defaultDialog(
+        title: "Something Went Wrong!",
+        radius: 20.0,
+        middleText: "Socket Exception",
+        onConfirm: ()=>Get.back()
+      );
+    }on HttpException{
+       Get.defaultDialog(
+        title: "Something Went Wrong!",
+        radius: 20.0,
+        middleText: "Http Exception",
+        onConfirm: ()=>Get.back()
+      );
+    }on FormatException{
+      Get.defaultDialog(
+        title: "Something Went Wrong!",
+        radius: 20.0,
+        middleText: "Format Exception",
+        onConfirm: ()=>Get.back()
+      );
     }
 
   }
@@ -60,7 +87,8 @@ class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
                     color: Colors.green,
                     child: ListTile(
                       onTap: ()=>{
-                        print(snapshot.data[index].stateId.toString())
+                        // print(snapshot.data[index].stateId.toString())
+                        Get.to(Adddistrict(),arguments: [snapshot.data[index].stateId])
                       },
                       dense:true,
                       title: Text(snapshot.data[index].stateName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),),

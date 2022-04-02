@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +78,8 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
     setState(() {
       _pivisible = true;
     });
-    Utils util = Utils();
+    try{
+      Utils util = Utils();
     final String urlbase = util.baseurl;
     final String url = "${urlbase}/customer/${mobileno}";
     var response = await http.get(Uri.parse(url));
@@ -104,16 +106,48 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
         
         }
     }else{
-       Get.snackbar(
-              "Something went wrong",
-               "Hello everyone",
+      //  Get.snackbar(
+      //         "Something went wrong",
+      //          "Hello everyone",
                
-               snackPosition: SnackPosition.BOTTOM,
+      //          snackPosition: SnackPosition.BOTTOM,
                  
-               );
-               Timer(Duration(microseconds: 2000), (){
-                  SystemNavigator.pop();
-               });
+      //          );
+      //          Timer(Duration(microseconds: 5000), (){
+      //             SystemNavigator.pop();
+      //          });
+
+      Get.defaultDialog(
+        title: "Something Went Wrong!!",
+        radius: 20.0,
+        onConfirm: () {
+          SystemNavigator.pop();
+        },
+      );
+    }
+    }on SocketException{
+       Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Socket Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
+
+    }on HttpException{
+       Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Http Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
+
+    }on FormatException{
+       Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Format Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
     }
     
   }

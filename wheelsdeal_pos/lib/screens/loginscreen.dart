@@ -1,5 +1,6 @@
 // @dart=2.9
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,8 +73,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: ElevatedButton.styleFrom(primary:Colors.green),
   onPressed: () {
       // Respond to button press
+      if(posicmobile.text.length ==10 && posicpassword.text.length >=6){
+        getAuth(posicmobile.text,posicpassword.text);
+      }else{
+        Get.defaultDialog(
+          title: "User Id and Password are Mandatory !!",
+          titleStyle: TextStyle(color: Colors.green),
+          middleText: "",
+          radius: 20.0,
+          onConfirm: ()=>Get.back()
+          
+        );
+      }
       
-      getAuth(posicmobile.text,posicpassword.text);
   },
   icon: Icon(FontAwesomeIcons.rightFromBracket, size: 18),
   label: Text("Login"),
@@ -101,29 +113,59 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _pivisiblity = true;
     });
-
-    Utils util = Utils();
+    try{
+        Utils util = Utils();
     final String finalbaseurl = util.baseurl;
+      final String url = "${finalbaseurl}/pos/posauthbymob/${posmob}/${pospassword}";
+      var response = await http.get(Uri.parse(url));
+      // print(response.statusCode);
+      
+      var jsonresponse = jsonDecode(response.body);
+      var status = jsonresponse[0]['status'];
     
-    final String url = "${finalbaseurl}/pos/posauthbymob/${posmob}/${pospassword}";
-    var response = await http.get(Uri.parse(url));
-    var jsonresponse = jsonDecode(response.body);
-    var status = jsonresponse[0]['status'];
-    
-    if(status == false){
-     setState(() {
-        _pivisiblity = false;
-      });
-      _showInvalidCredentialDialog();
-    }else{
-       setState(() {
-        _pivisiblity = false;
-      });
-      String posicmo = posicmobile.text;
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString("posm", posicmo);
-       Get.off(()=>DashBoard());
+            if(status == false){
+            setState(() {
+                _pivisiblity = false;
+              });
+              _showInvalidCredentialDialog();
+            }else{
+              setState(() {
+                _pivisiblity = false;
+              });
+              String posicmo = posicmobile.text;
+              final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              sharedPreferences.setString("posm", posicmo);
+              Get.off(()=>DashBoard());
+            
+      }
+
+    }on SocketException{
+      Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Socket Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
+    }on HttpException{
+      Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Http Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
+    }on FormatException{
+       Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Format Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
     }
+    catch(error){
+      print(error);
+    }
+  
+    
   }
 
   
