@@ -83,7 +83,6 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
     final String urlbase = util.baseurl;
     final String url = "${urlbase}/customer/${mobileno}";
     var response = await http.get(Uri.parse(url));
-        if(response.statusCode == 200){
             var jsonresponse = jsonDecode(response.body);
         var status = jsonresponse[0]['status'];
         if(status == false){
@@ -105,26 +104,7 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
           });
         
         }
-    }else{
-      //  Get.snackbar(
-      //         "Something went wrong",
-      //          "Hello everyone",
-               
-      //          snackPosition: SnackPosition.BOTTOM,
-                 
-      //          );
-      //          Timer(Duration(microseconds: 5000), (){
-      //             SystemNavigator.pop();
-      //          });
-
-      Get.defaultDialog(
-        title: "Something Went Wrong!!",
-        radius: 20.0,
-        onConfirm: () {
-          SystemNavigator.pop();
-        },
-      );
-    }
+   
     }on SocketException{
        Get.defaultDialog(
         title: "Something Went Wrong !!! Try again after sometime.",
@@ -145,6 +125,13 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
        Get.defaultDialog(
         title: "Something Went Wrong !!! Try again after sometime.",
         middleText: "Format Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
+    }on http.ClientException{
+      Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Client Exception",
         radius: 20.0,
         onConfirm: () => SystemNavigator.pop(),
       );

@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -160,11 +161,12 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   Future fetchPosDetail(String mob)async{
-    Utils util = Utils();
+  try{
+      Utils util = Utils();
     final String burl = util.baseurl;
     final String url = "${burl}/pos/posinfo/${mob}";
     var response = await http.get(Uri.parse(url));
-    if(response.statusCode ==200){
+     
       var jsonresponse = jsonDecode(response.body);
       var status = jsonresponse[0]['status'];
       if(status == true){
@@ -180,14 +182,15 @@ class _DashBoardState extends State<DashBoard> {
         });
         // print(pos);
         // print(pos.length);
-      }
-    }else{
-      Get.defaultDialog(
-        title: "Something Went Wrong",
-        radius: 20.0,
-        onConfirm: () => SystemNavigator.pop(),
-      );
+      
     }
+  }on SocketException{
+
+  }on HttpException{
+
+  }on FormatException{
+    
+  }
     
   }
 
