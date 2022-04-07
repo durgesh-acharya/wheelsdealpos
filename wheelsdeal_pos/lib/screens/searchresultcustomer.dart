@@ -20,29 +20,88 @@ class SearchCustomerResult extends StatefulWidget {
 class _SearchCustomerResultState extends State<SearchCustomerResult> {
   bool  _pivisible = false;
   bool cstatus;
+  bool  _centervisiblity = false;
   dynamic argumentdata = Get.arguments;
   List customer;
+
+
   Widget trueresult(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(customer[0] == null ? "" : customer[0],style: TextStyle(color: Colors.green,fontSize: 22),),
-        SizedBox(height: 10,),
-        Text(customer[1] == null ? "" : customer[1],style: TextStyle(color: Colors.green,fontSize: 18)),
-        SizedBox(height: 10,),
-        Text(customer[2] == null ? "" : customer[2],style: TextStyle(color: Colors.green,fontSize: 14)),
-        SizedBox(height: 10,),
-        Padding(
+    return Container(
+      height: 300,
+      child : Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left:8.0),
+              child: Row(
+                children: [
+                  Text("Name :",style: TextStyle(color: Colors.green,fontSize: 16)),
+                  SizedBox(width: 5.0,),
+                  Text(customer[0] == null ? "" : customer[0],style: TextStyle(color: Colors.green,fontSize: 16,fontWeight: FontWeight.bold))
+                ],
+              ),
+            ),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left :8.0),
+              child: Row(
+                children: [
+                  Text("Mobile No. :",style: TextStyle(color: Colors.green,fontSize: 16)),
+                  SizedBox(width: 5.0,),
+                  Text(customer[1] == null ? "" : customer[1],style: TextStyle(color: Colors.green,fontSize: 14,fontWeight: FontWeight.bold))
+                ],
+              ),
+            ),
+   
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left :8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Address :",style: TextStyle(color: Colors.green,fontSize: 16)),
+                  Text(customer[2] == null ? "" : customer[2],style: TextStyle(color: Colors.green,fontSize: 14,fontWeight: FontWeight.bold))
+
+                ],
+              ),
+            ),
+            
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                child: ElevatedButton(onPressed: (){
+                    
+                }, 
+                child: Text("Select and Make Gate Pass")),
+              ),
+            ),
+             Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: double.infinity,
-            child: ElevatedButton(onPressed: (){
-                
-            }, 
-            child: Text("Continue")),
+            child: ElevatedButton(
+              onPressed: (){
+              
+               print("view detail");
+              //  Timer(Duration(milliseconds: 1000),(){
+              //      Get.off(AddCustomerSelectState());
+              //  });
+               
+               
+              },
+              child: Text("History"),
+            ),
           ),
         )
-      ],
+          ],
+         ) ),
+      ),
     );
   }
 
@@ -61,7 +120,7 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
               
                
                Timer(Duration(milliseconds: 1000),(){
-                   Get.off(AddCustomerSelectState());
+                   Get.off(AddCustomerSelectState(),arguments:[argumentdata[1],argumentdata[2],argumentdata[0]]);
                });
                
                
@@ -69,7 +128,8 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
               child: Text("Add Customer"),
             ),
           ),
-        )
+        ),
+        
       ],
     );
   }
@@ -89,6 +149,7 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
           setState(() {
             _pivisible = false;
             cstatus = false;
+            _centervisiblity = true;
           });
         }else{
           var customerid = jsonresponse[0]['data'][0]['customer_id'];
@@ -101,6 +162,7 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
             _pivisible = false;
             cstatus = true;
             customer = customerDetail;
+            _centervisiblity = true;
           });
         
         }
@@ -142,15 +204,20 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    var customer = argumentdata[0]['customermobile'];
-    getCustomerinfo(customer);
+    // var customer = argumentdata[0]['customermobile'];
+    
+    getCustomerinfo(argumentdata[0]);
+    // print(argumentdata[1]);
+    // print(argumentdata[2]);
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
      appBar: AppBar(),
      body: Stack(children: [
-       Center(child: cstatus == true ? trueresult() : falseresult()),
+       Visibility(
+         visible: _centervisiblity,
+         child: Center(child: cstatus == true ? trueresult() : falseresult())),
        Visibility(
          visible: _pivisible,
          child: Center(child: CircularProgressIndicator(),))
@@ -158,3 +225,4 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
     );
   }
 }
+

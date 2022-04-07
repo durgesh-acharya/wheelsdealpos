@@ -18,7 +18,7 @@ class AddCustomerSelectState extends StatefulWidget {
 class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
 
    bool isloading = true;
-   
+   var argumentdata = Get.arguments;
    
 
   Future fetchState()async{
@@ -29,7 +29,7 @@ class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
       var response = await http.get(Uri.parse(url));
       var jsonresponse = jsonDecode(response.body);
       var status = jsonresponse[0]['status'];
-      print(status);
+      // print(status);
       if(status == true){
         var data = jsonresponse[0]['data'];
         return data.map((json) => Provision.fromJson(json)).toList();
@@ -67,6 +67,8 @@ class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
     // TODO: implement initState
     super.initState();
     fetchState();
+    print(argumentdata[0]);
+    print(argumentdata[1]);
   }
   @override
   Widget build(BuildContext context) {
@@ -88,7 +90,7 @@ class _AddCustomerSelectStateState extends State<AddCustomerSelectState> {
                     child: ListTile(
                       onTap: ()=>{
                         // print(snapshot.data[index].stateId.toString())
-                        Get.to(Adddistrict(),arguments: [snapshot.data[index].stateId])
+                        Get.to(Adddistrict(),arguments: [snapshot.data[index].stateId,argumentdata[0],argumentdata[1],argumentdata[2]])
                       },
                       dense:true,
                       title: Text(snapshot.data[index].stateName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),),

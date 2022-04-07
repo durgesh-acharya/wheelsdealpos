@@ -82,13 +82,13 @@ class _DashBoardState extends State<DashBoard> {
 
   Widget gridCustomer(){
     return GestureDetector(
-      onTap: () => Get.to(CustomerScreen()),
+      onTap: () => Get.to(CustomerScreen(),arguments: [pos[0],pos[1]]),
       child: Container(
                   
                   color: Colors.green,
                   margin: EdgeInsets.all(5.0),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
-                    Icon(FontAwesomeIcons.person,color: Colors.white,size: 40,),
+                    Icon(Icons.account_circle_outlined,color: Colors.white,size: 40,),
                     SizedBox(height: 10.0,),
                     Text("Customer",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
                   ],),
@@ -104,7 +104,8 @@ class _DashBoardState extends State<DashBoard> {
                   color: Colors.green,
                   margin: EdgeInsets.all(5.0),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
-                    Icon(FontAwesomeIcons.fileInvoice,color: Colors.white,size: 40,),
+                    Icon(
+  Icons.description_outlined,color: Colors.white,size: 40,),
                     SizedBox(height: 10.0,),
                     Text("Gate Pass",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
                   ],),
@@ -120,7 +121,7 @@ class _DashBoardState extends State<DashBoard> {
                   color: Colors.green,
                   margin: EdgeInsets.all(5.0),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
-                    Icon(FontAwesomeIcons.motorcycle,color: Colors.white,size: 40,),
+                    Icon(Icons.electric_bike_outlined,color: Colors.white,size: 40,),
                     SizedBox(height: 10.0,),
                     Text("Stock",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
                   ],),
@@ -136,7 +137,7 @@ class _DashBoardState extends State<DashBoard> {
                   color: Colors.green,
                   margin: EdgeInsets.all(5.0),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
-                    Icon(FontAwesomeIcons.arrowRightArrowLeft,color: Colors.white,size: 40,),
+                    Icon(Icons.swap_vertical_circle_outlined,color: Colors.white,size: 40,),
                     SizedBox(height: 10.0,),
                     Text("Pairing",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
                   ],),
@@ -185,11 +186,36 @@ class _DashBoardState extends State<DashBoard> {
       
     }
   }on SocketException{
+    Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Socket Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
 
   }on HttpException{
+    Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Http Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
 
   }on FormatException{
+    Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: "Format Exception",
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
     
+  }catch(error){
+    Get.defaultDialog(
+        title: "Something Went Wrong !!! Try again after sometime.",
+        middleText: error,
+        radius: 20.0,
+        onConfirm: () => SystemNavigator.pop(),
+      );
   }
     
   }

@@ -67,6 +67,8 @@ var argumentdata = Get.arguments;
     // TODO: implement initState
     super.initState();
      fetchdistrict = getDistrict(argumentdata[0]);
+     print("pos id = ${argumentdata[1]}");
+     print("branch id = ${argumentdata[2]}");
   }
 
   @override
@@ -87,7 +89,7 @@ var argumentdata = Get.arguments;
                   child: Container(
                     color: Colors.green,
                     child: ListTile(
-                      onTap: ()=> Get.to(CustomerAddForm(),arguments: [snapshot.data[index].districtId,argumentdata[0]]),
+                      onTap: ()=> Get.to(CustomerAddForm(),arguments: [snapshot.data[index].districtId,argumentdata[0],argumentdata[1],argumentdata[2],argumentdata[3]]),
                       title: Text(snapshot.data[index].districtName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14)),
                     ),
                   ),

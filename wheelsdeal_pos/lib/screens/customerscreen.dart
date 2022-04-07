@@ -16,9 +16,17 @@ class CustomerScreen extends StatefulWidget {
 class _CustomerScreenState extends State<CustomerScreen> {
   bool pivisible = false;
 
+  var argumentdata = Get.arguments;
+
   TextEditingController _customermobile = TextEditingController();
 
-  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(argumentdata[0]);
+    print(argumentdata[1]);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +60,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
             width: double.infinity,
       
             child: ElevatedButton(onPressed: (){
-              setState(() {
+             if(_customermobile.text.length == 10){
+                setState(() {
                 pivisible = true;
               });
               Timer(Duration(microseconds: 1000), (){
-                 Get.off(SearchCustomerResult(),arguments: [{"customermobile" : _customermobile.text}]);
+                 Get.off(SearchCustomerResult(),arguments: [_customermobile.text,argumentdata[0],argumentdata[1]]);
               });
+             }
                
             }, child: Text("Search",style: TextStyle(color: Colors.white),)),
           ),
