@@ -75,6 +75,7 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: double.infinity,
+                height: 45,
                 child: ElevatedButton(onPressed: (){
                     
                 }, 
@@ -84,19 +85,11 @@ class _SearchCustomerResultState extends State<SearchCustomerResult> {
              Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
+            color: Colors.white,
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: (){
-              
-               print("view detail");
-              //  Timer(Duration(milliseconds: 1000),(){
-              //      Get.off(AddCustomerSelectState());
-              //  });
-               
-               
-              },
-              child: Text("History"),
-            ),
+            child: TextButton(
+              onPressed: () => print("hey"),
+              child: Text("History",style: TextStyle(fontSize: 14),),)
           ),
         )
           ],

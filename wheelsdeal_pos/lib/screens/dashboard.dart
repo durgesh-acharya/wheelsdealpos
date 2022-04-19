@@ -8,7 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:wheelsdeal_pos/screens/customerscreen.dart';
+import 'package:wheelsdeal_pos/screens/gatepass/gatepass.dart';
 import 'package:wheelsdeal_pos/screens/loginscreen.dart';
 import 'package:wheelsdeal_pos/utils.dart';
 import 'package:http/http.dart' as http;
@@ -98,7 +100,7 @@ class _DashBoardState extends State<DashBoard> {
 
   Widget gridGatepass(){
     return GestureDetector(
-      onTap: () => print("button clicked"),
+      onTap: () => Get.to(GatePass(),arguments: [pos[0],pos[1]]),
       child: Container(
                   
                   color: Colors.green,
@@ -115,7 +117,7 @@ class _DashBoardState extends State<DashBoard> {
 
   Widget gridStock(){
     return GestureDetector(
-      onTap: () => print("button clicked"),
+      onTap: () => print("yay"),
       child: Container(
                   
                   color: Colors.green,
@@ -140,6 +142,22 @@ class _DashBoardState extends State<DashBoard> {
                     Icon(Icons.swap_vertical_circle_outlined,color: Colors.white,size: 40,),
                     SizedBox(height: 10.0,),
                     Text("Pairing",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
+                  ],),
+                ),
+    );
+  }
+
+    Widget gridBattery(){
+    return GestureDetector(
+      onTap: () => print("hi"),
+      child: Container(
+                  
+                  color: Colors.green,
+                  margin: EdgeInsets.all(5.0),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
+                    Icon(Icons.battery_full,color: Colors.white,size: 40,),
+                    SizedBox(height: 10.0,),
+                    Text("Battery",style: TextStyle(color: Colors.white,fontSize: 12.0,fontWeight: FontWeight.bold),)
                   ],),
                 ),
     );
@@ -253,6 +271,7 @@ class _DashBoardState extends State<DashBoard> {
              gridGatepass(),
              gridStock(),
              gridPairing(),
+             gridBattery()
               // Text(posnum == null ? "" : posnum)
                 
               ],
