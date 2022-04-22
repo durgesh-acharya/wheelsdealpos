@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wheelsdeal_pos/screens/customerscreen.dart';
 import 'package:wheelsdeal_pos/screens/gatepass/gatepass.dart';
 import 'package:wheelsdeal_pos/screens/loginscreen.dart';
+import 'package:wheelsdeal_pos/screens/stock/stockscreen.dart';
 import 'package:wheelsdeal_pos/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -117,7 +118,7 @@ class _DashBoardState extends State<DashBoard> {
 
   Widget gridStock(){
     return GestureDetector(
-      onTap: () => print("yay"),
+      onTap: () => Get.to(StockScreen()),
       child: Container(
                   
                   color: Colors.green,
